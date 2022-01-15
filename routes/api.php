@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\MemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,4 @@ Route::post('add',[DeviceController::class,'add']);
 Route::put('edit/{id?}',[DeviceController::class,'edit']);
 Route::delete('delete/{id?}', [DeviceController::class,'delete']);
 Route::get('search/{id?}',[DeviceController::class,'search']);
+Route::apiResource('member',MemberController::class);
