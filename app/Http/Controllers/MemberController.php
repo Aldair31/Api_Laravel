@@ -79,8 +79,23 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id=null)
     {
-        //
+        if($id){
+            $member = Member::find($id);
+            if($member){
+                $result= $member->delete();
+                if($result){
+                    return ["msg"=>"Se elimino correctamente"];
+                }else{
+                    return ["msg"=>"Error en la operación de eliminar"];
+                }
+            }
+            else{
+                return ["msg"=>"Miembro no encontrador"];
+            }
+        }else{
+            return ["msg"=>"Por favor, ingrese un id"];
+        }
     }
 }
