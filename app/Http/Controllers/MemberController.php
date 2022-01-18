@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
-
+use Validator;
 class MemberController extends Controller
 {
     /**
@@ -26,6 +26,7 @@ class MemberController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -34,9 +35,24 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $req)
     {
-        //
+        $rules = array('name'=>'min:3');
+        $validator= Validator::make($req->all(),$rules);
+        if($validator->fails()){
+            return response()->json($validator->errors(),401);
+        }
+        else{
+            $member = new Member;
+            $member->name = $req->name;
+            $result = $member->save();
+            if($result){
+                return ['msg'=>'Guardado con exito'];
+            }
+            else{
+                return ['msg'=>'Error al guardar'];
+            }
+        }
     }
 
     /**
@@ -45,9 +61,19 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id=null)
     {
-        //
+        if($id != null){
+            $member=  Member::find($id) ;
+            if($member){
+                return $member;
+            }else{
+                return ['msg'=>'Miembro no encontrado'];
+            }
+        }
+        else{
+            return  ['msg'=>'Por favor, ingrese un id'];
+        }
     }
 
     /**
